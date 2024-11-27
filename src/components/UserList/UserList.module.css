@@ -1,0 +1,38 @@
+.userList {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.userItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.userItem:hover {
+  background-color: #e5e5e5;
+}
+
+.nickname {
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.joinButton {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.joinButton:hover {
+  background-color: #0051b3;
+}
