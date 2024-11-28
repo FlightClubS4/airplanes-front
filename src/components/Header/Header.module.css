@@ -1,8 +1,44 @@
 .header {
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 2rem;
   background-color: var(--primary-color);
   color: white;
-  text-align: center;
   border-bottom: 1px solid #e5e5e5;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content h1 {
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.walletSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.networkInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.networkDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
 }

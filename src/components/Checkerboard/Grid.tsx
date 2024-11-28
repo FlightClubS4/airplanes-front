@@ -12,6 +12,7 @@ interface GridProps {
   invalidAirplanes: Set<number>;
   onDrop: (id: number, clickedCellOffset: number, airplaneId: number) => void;
   onCellClick: (id: number, isAirplanePart: boolean, airplaneId: number | null) => void;
+  isAttackBoard?: boolean;
 }
 
 export const Grid: React.FC<GridProps> = ({
@@ -19,17 +20,19 @@ export const Grid: React.FC<GridProps> = ({
   selectedAirplaneId,
   invalidAirplanes,
   onDrop,
-  onCellClick
+  onCellClick,
+  isAttackBoard = false
 }) => {
-  // 创建一个映射，记录每个格子属于哪架飞机
   const cellToAirplane = new Map<number, number>();
   
-  airplanes.forEach(airplane => {
-    const positions = getAirplanePositions(airplane);
-    positions.forEach(pos => {
-      cellToAirplane.set(pos, airplane.id);
+  if (!isAttackBoard) {
+    airplanes.forEach(airplane => {
+      const positions = getAirplanePositions(airplane);
+      positions.forEach(pos => {
+        cellToAirplane.set(pos, airplane.id);
+      });
     });
-  });
+  }
 
   return (
     <div className={styles.grid}>
@@ -52,6 +55,7 @@ export const Grid: React.FC<GridProps> = ({
             isSelected={airplaneId === selectedAirplaneId}
             isInvalid={isInvalid}
             airplaneId={airplaneId}
+            isAttackBoard={isAttackBoard}
           />
         );
       })}

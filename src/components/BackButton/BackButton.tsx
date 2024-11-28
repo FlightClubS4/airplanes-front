@@ -3,13 +3,16 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '../Button/Button';
+import { useGameStore } from '../../store/gameStore';
 import styles from './BackButton.module.css';
 
 export const BackButton: React.FC = () => {
   const router = useRouter();
+  const { setGameCreated } = useGameStore();
 
   const handleBack = () => {
-    router.back();
+    setGameCreated(false);
+    router.push('/');
   };
 
   return (

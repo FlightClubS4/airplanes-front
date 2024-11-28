@@ -1,5 +1,6 @@
-import { Direction, Airplane, DirectionOffsets } from '../types/airplane';
-import { useAirplaneValidation } from '../hooks/useAirplaneValidation';
+import { Direction, Airplane } from '../types/airplane';
+import { isAirplaneInBoard } from './validation';
+import { DirectionOffsets } from '../types/airplane';
 
 // 获取飞机占用的所有格子
 export const getAirplanePositions = (airplane: Airplane): Set<number> => {
@@ -52,7 +53,7 @@ const generateRandomDirection = (): Direction => {
 export const generateValidAirplane = (
   id: number,
   existingAirplanes: Airplane[],
-  isAirplaneInBoard: ReturnType<typeof useAirplaneValidation>
+  isValidPosition: (position: number, direction: Direction) => boolean
 ): Airplane => {
   let attempts = 0;
   const maxAttempts = 1000;
@@ -61,15 +62,13 @@ export const generateValidAirplane = (
     const position = generateRandomPosition();
     const direction = generateRandomDirection();
 
-    // 检查是否在棋盘范围内
-    if (!isAirplaneInBoard(position, direction)) {
+    if (!isValidPosition(position, direction)) {
       attempts++;
       continue;
     }
 
     const newAirplane: Airplane = { id, position, direction };
 
-    // 检查是否与现有飞机重叠
     const hasOverlap = existingAirplanes.some(existing => 
       checkAirplanesOverlap(newAirplane, existing)
     );
@@ -87,12 +86,12 @@ export const generateValidAirplane = (
 // 生成指定数量的飞机
 export const generateAirplanes = (
   count: number,
-  isAirplaneInBoard: ReturnType<typeof useAirplaneValidation>
+  isValidPosition: (position: number, direction: Direction) => boolean
 ): Airplane[] => {
   const airplanes: Airplane[] = [];
 
   for (let i = 0; i < count; i++) {
-    const airplane = generateValidAirplane(i, airplanes, isAirplaneInBoard);
+    const airplane = generateValidAirplane(i, airplanes, isValidPosition);
     airplanes.push(airplane);
   }
 

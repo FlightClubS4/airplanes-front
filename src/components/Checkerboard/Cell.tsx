@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { DragItem } from '../../types/airplane';
+import { useGameStore } from '../../store/gameStore';
 import styles from './Checkerboard.module.css';
 
 interface CellProps {
@@ -15,6 +16,7 @@ interface CellProps {
   isSelected: boolean;
   isInvalid: boolean;
   airplaneId: number | null;
+  isAttackBoard?: boolean;
 }
 
 export const Cell: React.FC<CellProps> = ({ 
@@ -26,18 +28,23 @@ export const Cell: React.FC<CellProps> = ({
   airplanePosition,
   isSelected,
   isInvalid,
-  airplaneId
+  airplaneId,
+  isAttackBoard = false
 }) => {
+  const { isGameCreated } = useGameStore();
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'airplane',
     drop: (item: DragItem) => {
-      onDrop(id, item.clickedCellOffset, item.airplaneId);
+      if (!isGameCreated && !isAttackBoard) {
+        onDrop(id, item.clickedCellOffset, item.airplaneId);
+      }
       return undefined;
     },
     collect: monitor => ({
       isOver: !!monitor.isOver(),
     }),
-  }));
+  }), [id, onDrop, isGameCreated, isAttackBoard]);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'airplane',
@@ -49,32 +56,40 @@ export const Cell: React.FC<CellProps> = ({
         airplaneId: airplaneId || 0
       };
     },
-    canDrag: isAirplanePart && airplaneId !== null,
+    canDrag: !isGameCreated && !isAttackBoard && isAirplanePart && airplaneId !== null,
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }), [id, isAirplanePart, airplanePosition, airplaneId]);
+  }), [id, isAirplanePart, airplanePosition, airplaneId, isGameCreated, isAttackBoard]);
 
   const ref = useRef<HTMLDivElement>(null);
   drag(drop(ref));
 
   const handleClick = () => {
-    onClick(id, isAirplanePart);
+    if (isAttackBoard) {
+      onClick(id, false);
+    } else if (!isGameCreated) {
+      onClick(id, isAirplanePart);
+    }
   };
+
+  const cellClassName = `
+    ${styles.cell} 
+    ${isOver && !isGameCreated && !isAttackBoard ? styles.cellOver : ''} 
+    ${isSelected && !isGameCreated && !isAttackBoard ? styles.selected : ''} 
+    ${isInvalid ? styles.invalid : ''}
+    ${isGameCreated || isAttackBoard ? styles.disabled : ''}
+    ${isAttackBoard ? styles.attackCell : ''}
+  `;
 
   return (
     <div
       ref={ref}
-      className={`
-        ${styles.cell} 
-        ${isOver ? styles.cellOver : ''} 
-        ${isSelected ? styles.selected : ''} 
-        ${isInvalid ? styles.invalid : ''}
-      `}
+      className={cellClassName}
       onClick={handleClick}
     >
       <span className={styles.cellId}>{id}</span>
-      {isAirplanePart && (
+      {isAirplanePart && !isAttackBoard && (
         <div 
           className={`
             ${styles.airplanePart} 
