@@ -38,5 +38,5 @@ export const usePlayerStore = create<PlayerState>((set) => ({
     
   setChipCount: (count) => set({ chipCount: count }),
 
-  reset: () => set({ players: [], chipCount: 0 }),
+  reset: () => set({ players: [] }),
 }));

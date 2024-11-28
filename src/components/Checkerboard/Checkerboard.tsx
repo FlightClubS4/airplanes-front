@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Grid } from './Grid';
+import { Grid } from '../Grid/Grid';
 import { useGameStore } from '../../store/gameStore';
 import { generateAirplanes } from '../../utils/airplane';
 import { isAirplaneInBoard } from '../../utils/validation';

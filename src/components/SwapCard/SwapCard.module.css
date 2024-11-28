@@ -1,0 +1,102 @@
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  margin: 0 auto;
+}
+
+.swapContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.inputGroup label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  border-radius: 12px;
+  padding: 12px;
+  gap: 12px;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0;
+  color: #333;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.input.readOnly {
+  color: #666;
+  cursor: not-allowed;
+}
+
+.select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  min-width: 80px;
+}
+
+.select:hover:not(:disabled) {
+  border-color: #d1d5db;
+}
+
+.select.readOnly {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.switchButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px auto;
+  font-size: 20px;
+  color: #666;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.switchButton:hover {
+  background: #e5e5e5;
+  transform: scale(1.05);
+}
+
+.switchButton:active {
+  transform: scale(0.95);
+}

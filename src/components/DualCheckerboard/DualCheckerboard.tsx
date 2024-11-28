@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Checkerboard } from '../Checkerboard/Checkerboard';
 import { AttackBoard } from '../AttackBoard/AttackBoard';
 import { BackButton } from '../BackButton/BackButton';
@@ -9,20 +9,15 @@ import { usePlayerStore } from '../../store/playerStore';
 import styles from './DualCheckerboard.module.css';
 
 export const DualCheckerboard: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const chipCount = parseInt(searchParams.get('count') || '0', 10);
-  const { setChipCount, players, addPlayer } = usePlayerStore();
-  
+  const { chipCount, setChipCount, players, addPlayer, reset } = usePlayerStore();
+  console.warn("chipCount", chipCount);
   useEffect(() => {
     setChipCount(chipCount);
-    // 清空之前的玩家状态
-    usePlayerStore.getState().players.forEach(player => {
-      usePlayerStore.getState().removePlayer(player.id);
-    });
-    // 只添加当前玩家
+    // 重置玩家状态
+    reset();
+    // 添加当前玩家
     addPlayer('player1');
-  }, [chipCount, setChipCount, addPlayer]);
+  }, [chipCount, setChipCount, addPlayer, reset]);
 
   return (
     <div className={styles.container}>

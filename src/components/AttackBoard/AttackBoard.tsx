@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Grid } from '../Checkerboard/Grid';
+import { Grid } from '../Grid/Grid';
 import styles from './AttackBoard.module.css';
 
 export const AttackBoard: React.FC = () => {
