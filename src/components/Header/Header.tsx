@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.content}>
-        <h1>Next.js 应用</h1>
+        <h1>炸飞机</h1>
         <div className={styles.walletSection}>
           <ConnectButton 
             label="连接钱包"

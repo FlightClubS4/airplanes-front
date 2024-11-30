@@ -6,14 +6,14 @@ import { Button } from '../Button/Button';
 import { Modal } from '../Modal/Modal';
 import { useGameStore } from '../../store/gameStore';
 import styles from './CreateButton.module.css';
-import { usePlayerStore } from "../../store/playerStore";
+import useAbly from "@/services/ably";
 
 export const CreateButton: React.FC = () => {
   const router = useRouter();
+  const { createRoom } = useAbly();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [count, setCount] = useState(0);
   const { invalidAirplanes, setGameCreated } = useGameStore();
-  const { setChipCount } = usePlayerStore();
 
   const handleCreate = () => {
     if (invalidAirplanes.size > 0) {
@@ -25,8 +25,8 @@ export const CreateButton: React.FC = () => {
 
   const handleConfirm = () => {
     if (count > 0) {
-      setChipCount(count);
       setGameCreated(true);
+      createRoom("player1", count);
       router.push('/startgame');
       setIsModalOpen(false);
     } else {

@@ -7,17 +7,26 @@ import { AttackBoard } from '../AttackBoard/AttackBoard';
 import { BackButton } from '../BackButton/BackButton';
 import { usePlayerStore } from '../../store/playerStore';
 import styles from './DualCheckerboard.module.css';
+import useAbly from "@/services/ably";
 
 export const DualCheckerboard: React.FC = () => {
-  const { chipCount, setChipCount, players, addPlayer, reset } = usePlayerStore();
-  console.warn("chipCount", chipCount);
+  const { roomInfo, players, addPlayer, reset } = usePlayerStore();
+  const { lobbyChannel, getRoomChannel } = useAbly();
   useEffect(() => {
-    setChipCount(chipCount);
+    lobbyChannel.subscribe("room-updated", (message) => {
+      console.warn(message);
+    });
+
     // 重置玩家状态
     reset();
     // 添加当前玩家
     addPlayer('player1');
-  }, [chipCount, setChipCount, addPlayer, reset]);
+
+    getRoomChannel(roomInfo.roomId).presence.subscribe("enter", (presenceMessage) => {
+      console.log(`${presenceMessage.clientId} 进入了房间`);
+      console.log(presenceMessage);
+    });
+  }, [addPlayer, reset]);
 
   return (
     <div className={styles.container}>
@@ -35,7 +44,7 @@ export const DualCheckerboard: React.FC = () => {
             <input
               type="text"
               className={styles.chipInput}
-              value={chipCount}
+              value={roomInfo.chipAmount}
               readOnly
             />
             <div className={styles.playerStatus}>
