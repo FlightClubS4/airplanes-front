@@ -6,6 +6,7 @@ import { Checkerboard } from '../Checkerboard/Checkerboard';
 import { AttackBoard } from '../AttackBoard/AttackBoard';
 import { BackButton } from '../BackButton/BackButton';
 import { usePlayerStore } from '../../store/playerStore';
+import { Button } from "../Button/Button";
 import styles from './DualCheckerboard.module.css';
 import useAbly from "@/services/ably";
 
@@ -28,6 +29,8 @@ export const DualCheckerboard: React.FC = () => {
     });
   }, [addPlayer, reset]);
 
+  const handleRaise = () => {};
+
   return (
     <div className={styles.container}>
       <BackButton />
@@ -36,7 +39,7 @@ export const DualCheckerboard: React.FC = () => {
           <h2 className={styles.title}>我的棋盘</h2>
           <Checkerboard hideRotate={true} />
         </div>
-        
+
         <div className={styles.infoSection}>
           <h2 className={styles.title}>游戏信息</h2>
           <div className={styles.chipInfo}>
@@ -53,6 +56,7 @@ export const DualCheckerboard: React.FC = () => {
                 <p className={styles.waitingMessage}>等待其他玩家加入...</p>
               )}
             </div>
+            <Button onClick={handleRaise}>加筹码</Button>
           </div>
         </div>
 

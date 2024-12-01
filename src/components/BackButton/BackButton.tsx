@@ -1,23 +1,25 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '../Button/Button';
-import { useGameStore } from '../../store/gameStore';
-import styles from './BackButton.module.css';
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "../Button/Button";
+import { useGameStore } from "../../store/gameStore";
+import styles from "./BackButton.module.css";
 
 export const BackButton: React.FC = () => {
   const router = useRouter();
-  const { setGameCreated } = useGameStore();
+  const { resetGame } = useGameStore();
 
   const handleBack = () => {
-    setGameCreated(false);
-    router.push('/');
+    resetGame();
+    router.push("/");
   };
 
   return (
     <div className={styles.backButton}>
-      <Button onClick={handleBack} variant="secondary">返回</Button>
+      <Button onClick={handleBack} variant="secondary">
+        返回
+      </Button>
     </div>
   );
 };

@@ -31,7 +31,7 @@
   justify-content: center;
   position: relative;
   cursor: crosshair;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .cell:hover {
@@ -45,4 +45,39 @@
   top: 2px;
   left: 2px;
   user-select: none;
+}
+
+.hitHead {
+  background-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+.hitBody {
+  background-color: rgba(59, 130, 246, 0.5) !important;
+}
+
+.hitMiss {
+  background-color: rgba(156, 163, 175, 0.5) !important;
+}
+
+.hit {
+  position: absolute;
+  inset: 2px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: hitReveal 0.5s ease-out;
+}
+
+@keyframes hitReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

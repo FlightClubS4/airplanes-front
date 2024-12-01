@@ -1,31 +1,32 @@
-'use client';
+"use client";
 
-import React, { useCallback, useEffect } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Grid } from '../Grid/Grid';
-import { useGameStore } from '../../store/gameStore';
-import { generateAirplanes } from '../../utils/airplane';
-import { isAirplaneInBoard } from '../../utils/validation';
-import styles from './Checkerboard.module.css';
+import React, { useCallback, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Grid } from "../Grid/Grid";
+import { useGameStore } from "../../store/gameStore";
+import { generateAirplanes } from "../../utils/airplane";
+import { isAirplaneInBoard } from "../../utils/validation";
+import styles from "./Checkerboard.module.css";
 
 interface CheckerboardProps {
   hideRotate?: boolean;
 }
 
-export const Checkerboard: React.FC<CheckerboardProps> = ({ 
+export const Checkerboard: React.FC<CheckerboardProps> = ({
   hideRotate = false
 }) => {
-  const { 
+  const {
     airplanes,
     selectedAirplaneId,
     setSelectedAirplane,
     updateAirplanePosition,
     rotateAirplane,
     setAirplanes,
-    invalidAirplanes
+    invalidAirplanes,
+    myBoardHits
   } = useGameStore();
-  
+
   useEffect(() => {
     if (airplanes.length === 0) {
       const initialAirplanes = generateAirplanes(3, isAirplaneInBoard);
@@ -33,18 +34,26 @@ export const Checkerboard: React.FC<CheckerboardProps> = ({
     }
   }, [airplanes.length, setAirplanes]);
 
-  const handleDrop = useCallback((cellId: number, clickedCellOffset: number, airplaneId: number) => {
-    const newPosition = cellId - clickedCellOffset;
-    updateAirplanePosition(airplaneId, newPosition);
-  }, [updateAirplanePosition]);
+  const handleDrop = useCallback(
+    (cellId: number, clickedCellOffset: number, airplaneId: number) => {
+      const newPosition = cellId - clickedCellOffset;
+      updateAirplanePosition(airplaneId, newPosition);
+    },
+    [updateAirplanePosition]
+  );
 
-  const handleCellClick = useCallback((id: number, isAirplanePart: boolean, airplaneId: number | null) => {
-    if (airplaneId !== null) {
-      setSelectedAirplane(selectedAirplaneId === airplaneId ? null : airplaneId);
-    } else {
-      setSelectedAirplane(null);
-    }
-  }, [setSelectedAirplane, selectedAirplaneId]);
+  const handleCellClick = useCallback(
+    (id: number, isAirplanePart: boolean, airplaneId: number | null) => {
+      if (airplaneId !== null) {
+        setSelectedAirplane(
+          selectedAirplaneId === airplaneId ? null : airplaneId
+        );
+      } else {
+        setSelectedAirplane(null);
+      }
+    },
+    [setSelectedAirplane, selectedAirplaneId]
+  );
 
   const handleRotate = useCallback(() => {
     if (selectedAirplaneId !== null) {
@@ -52,18 +61,21 @@ export const Checkerboard: React.FC<CheckerboardProps> = ({
     }
   }, [selectedAirplaneId, rotateAirplane]);
 
-  const handleBoardClick = useCallback((e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      setSelectedAirplane(null);
-    }
-  }, [setSelectedAirplane]);
+  const handleBoardClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target === e.currentTarget) {
+        setSelectedAirplane(null);
+      }
+    },
+    [setSelectedAirplane]
+  );
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.container}>
         {!hideRotate && (
           <div className={styles.buttonGroup}>
-            <button 
+            <button
               onClick={handleRotate}
               className={styles.rotateButton}
               disabled={selectedAirplaneId === null}
@@ -72,16 +84,14 @@ export const Checkerboard: React.FC<CheckerboardProps> = ({
             </button>
           </div>
         )}
-        <div 
-          className={styles.checkerboard}
-          onClick={handleBoardClick}
-        >
+        <div className={styles.checkerboard} onClick={handleBoardClick}>
           <Grid
             airplanes={airplanes}
             selectedAirplaneId={selectedAirplaneId}
             onDrop={handleDrop}
             onCellClick={handleCellClick}
             invalidAirplanes={invalidAirplanes}
+            myBoardHits={myBoardHits}
           />
         </div>
       </div>

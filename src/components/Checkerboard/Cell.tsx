@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { DragItem } from '../../types/airplane';
 import { useGameStore } from '../../store/gameStore';
-import styles from './Checkerboard.module.css';
+import styles from './Cell.module.css';
 
 interface CellProps {
   id: number;
@@ -17,19 +17,21 @@ interface CellProps {
   isInvalid: boolean;
   airplaneId: number | null;
   isAttackBoard?: boolean;
+  isHit?: boolean;
 }
 
-export const Cell: React.FC<CellProps> = ({ 
-  id, 
-  isAirplanePart, 
-  isAirplaneHead, 
-  onDrop, 
+export const Cell: React.FC<CellProps> = ({
+  id,
+  isAirplanePart,
+  isAirplaneHead,
+  onDrop,
   onClick,
   airplanePosition,
   isSelected,
   isInvalid,
   airplaneId,
-  isAttackBoard = false
+  isAttackBoard = false,
+  isHit = false
 }) => {
   const { isGameCreated } = useGameStore();
 
@@ -74,9 +76,9 @@ export const Cell: React.FC<CellProps> = ({
   };
 
   const cellClassName = `
-    ${styles.cell} 
-    ${isOver && !isGameCreated && !isAttackBoard ? styles.cellOver : ''} 
-    ${isSelected && !isGameCreated && !isAttackBoard ? styles.selected : ''} 
+    ${styles.cell}
+    ${isOver && !isGameCreated && !isAttackBoard ? styles.cellOver : ''}
+    ${isSelected && !isGameCreated && !isAttackBoard ? styles.selected : ''}
     ${isInvalid ? styles.invalid : ''}
     ${isGameCreated || isAttackBoard ? styles.disabled : ''}
     ${isAttackBoard ? styles.attackCell : ''}
@@ -92,12 +94,13 @@ export const Cell: React.FC<CellProps> = ({
       {isAirplanePart && !isAttackBoard && (
         <div 
           className={`
-            ${styles.airplanePart} 
-            ${isAirplaneHead ? styles.airplaneHead : ''} 
+            ${styles.airplanePart}
+            ${isAirplaneHead ? styles.airplaneHead : ''}
             ${isDragging ? styles.dragging : ''}
           `}
         />
       )}
+      {isHit && <div className={styles.hitMark}>✖️</div>}
     </div>
   );
 };
