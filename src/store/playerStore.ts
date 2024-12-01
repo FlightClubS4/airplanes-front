@@ -10,7 +10,7 @@ interface PlayerState {
   // chipCount: number;
   roomInfo: {
     roomId: string;
-    creator: string; 
+    creator: string;
     player2: string | null;
     chipAmount: string | number;
     status: string;
@@ -18,15 +18,15 @@ interface PlayerState {
   addPlayer: (playerId: string) => void;
   removePlayer: (playerId: string) => void;
   setPlayerReady: (playerId: string) => void;
-  setRoomInfo: (roomInfo: Object) => void;
+  setRoomInfo: (roomInfo: PlayerState["roomInfo"]) => void;
   reset: () => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set) => ({
   players: [],
   roomInfo: {
-    roomId: '',
-    creator: '',
+    roomId: "",
+    creator: "",
     player2: null,
     chipAmount: "0",
     status: "waiting"
@@ -50,7 +50,7 @@ export const usePlayerStore = create<PlayerState>((set) => ({
     })),
 
   // setChipCount: (count) => set({ chipCount: count }),
-  setRoomInfo: (roomInfo) => set({ roomInfo }),
+  setRoomInfo: (roomInfo: PlayerState["roomInfo"]) => set({ roomInfo }),
 
   reset: () => set({ players: [] })
 }));
