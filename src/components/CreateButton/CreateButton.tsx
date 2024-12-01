@@ -52,7 +52,7 @@ export const CreateButton: React.FC = () => {
             type="number"
             min="1"
             value={count}
-            onChange={(e) => setCount(e.target.value)}
+            onChange={(e) => setCount(Number(e.target.value))}
             className={styles.input}
             placeholder="请输入大于0的数字"
           />
