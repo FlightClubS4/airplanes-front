@@ -9,7 +9,7 @@ export const Menu: React.FC = () => {
         Home
       </Link>
       <Link href="/chip" className={styles.link}>
-        Chip
+        FAT
       </Link>
     </nav>
   );

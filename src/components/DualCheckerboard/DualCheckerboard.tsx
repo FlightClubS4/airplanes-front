@@ -1,33 +1,51 @@
-'use client';
+"use client";
 
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Checkerboard } from '../Checkerboard/Checkerboard';
-import { AttackBoard } from '../AttackBoard/AttackBoard';
-import { BackButton } from '../BackButton/BackButton';
-import { usePlayerStore } from '../../store/playerStore';
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Checkerboard } from "../Checkerboard/Checkerboard";
+import { AttackBoard } from "../AttackBoard/AttackBoard";
+import { BackButton } from "../BackButton/BackButton";
+import { usePlayerStore } from "../../store/playerStore";
 import { Button } from "../Button/Button";
-import styles from './DualCheckerboard.module.css';
+import styles from "./DualCheckerboard.module.css";
 import useAbly from "@/services/ably";
+import { useAccount } from "wagmi";
 
 export const DualCheckerboard: React.FC = () => {
   const { roomInfo, players, addPlayer, reset } = usePlayerStore();
   const { lobbyChannel, getRoomChannel } = useAbly();
+  const { address } = useAccount();
   useEffect(() => {
-    lobbyChannel.subscribe("room-updated", (message) => {
-      console.warn(message);
-    });
+    // lobbyChannel.subscribe("room-updated", (message) => {
+    //   console.warn(message);
+    // });
 
     // 重置玩家状态
     reset();
     // 添加当前玩家
-    addPlayer('player1');
+    addPlayer("player1");
 
-    getRoomChannel(roomInfo.roomId).presence.subscribe("enter", (presenceMessage) => {
+    const roomChannel = getRoomChannel(roomInfo.roomId);
+    // console.warn(roomChannel.presence);
+    roomChannel.presence.subscribe("enter", (presenceMessage) => {
       console.log(`${presenceMessage.clientId} 进入了房间`);
-      console.log(presenceMessage);
+      roomChannel.presence.update({
+        player: address, // 玩家地址
+        status: "ready", // 自定义状态
+        timestamp: Date.now() // 可选，标记时间
+      });
+    });
+
+    roomChannel.presence.subscribe("update", (presenceMessage) => {
+      console.log(`${presenceMessage.clientId} 更新了状态`);
+    });
+
+    roomChannel.presence.get((err, message) => {
+      console.warn(message);
     });
   }, [addPlayer, reset]);
+
+  
 
   const handleRaise = () => {};
 

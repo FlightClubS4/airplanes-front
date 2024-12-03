@@ -4,23 +4,23 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '../Button/Button';
 import styles from './SwapCard.module.css';
 
-const CHIP_RATE = 1000000; // 1 ETH = 1,000,000 CHIP
+const CHIP_RATE = 1000000; // 1 ETH = 1,000,000 FAT
 
-type Token = 'ETH' | 'CHIP';
+type Token = 'ETH' | 'FAT';
 
 export const SwapCard = () => {
   const [sellAmount, setSellAmount] = useState('');
   const [buyAmount, setBuyAmount] = useState('0');
   const [sellToken, setSellToken] = useState<Token>('ETH');
-  const [buyToken, setBuyToken] = useState<Token>('CHIP');
+  const [buyToken, setBuyToken] = useState<Token>('FAT');
 
   useEffect(() => {
     if (sellAmount) {
       const sellValue = parseFloat(sellAmount);
       if (!isNaN(sellValue)) {
-        if (sellToken === 'ETH' && buyToken === 'CHIP') {
+        if (sellToken === 'ETH' && buyToken === 'FAT') {
           setBuyAmount((sellValue * CHIP_RATE).toFixed(6));
-        } else if (sellToken === 'CHIP' && buyToken === 'ETH') {
+        } else if (sellToken === 'FAT' && buyToken === 'ETH') {
           setBuyAmount((sellValue / CHIP_RATE).toFixed(6));
         } else {
           setBuyAmount(sellAmount);
@@ -63,14 +63,14 @@ export const SwapCard = () => {
               value={sellToken}
               onChange={(e) => {
                 setSellToken(e.target.value as Token);
-                setBuyToken(e.target.value === 'ETH' ? 'CHIP' : 'ETH');
+                setBuyToken(e.target.value === 'ETH' ? 'FAT' : 'ETH');
                 setSellAmount('');
                 setBuyAmount('0');
               }}
               className={styles.select}
             >
               <option value="ETH">ETH</option>
-              <option value="CHIP">CHIP</option>
+              <option value="FAT">FAT</option>
             </select>
           </div>
         </div>
@@ -92,14 +92,14 @@ export const SwapCard = () => {
               value={buyToken}
               onChange={(e) => {
                 setBuyToken(e.target.value as Token);
-                setSellToken(e.target.value === 'ETH' ? 'CHIP' : 'ETH');
+                setSellToken(e.target.value === 'ETH' ? 'FAT' : 'ETH');
                 setSellAmount('');
                 setBuyAmount('0');
               }}
               className={styles.select}
             >
               <option value="ETH">ETH</option>
-              <option value="CHIP">CHIP</option>
+              <option value="FAT">FAT</option>
             </select>
           </div>
         </div>

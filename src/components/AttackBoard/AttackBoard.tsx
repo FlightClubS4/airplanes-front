@@ -41,7 +41,9 @@ export const AttackBoard: React.FC = () => {
 
       // 模拟对手的攻击
       const opponentAttackPosition = Math.floor(Math.random() * 256);
-      addMyBoardHit(opponentAttackPosition);
+      setTimeout(() => {
+        addMyBoardHit(opponentAttackPosition);
+      }, 2000);
     },
     [attackBoardHits, addAttackBoardHit, addMyBoardHit]
   );
